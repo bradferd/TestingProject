@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
+import { connect } from 'react-redux'
+import * as actions from 'actions';
 
-export default (props) => {
+const CommentBox = ({ saveComment }) => {
     const [comment, setComment] = useState("");
 
     return (
         <form onSubmit={(e) => {
             e.preventDefault();
-
-            // TODO - Call an action creator
-            // Save the comment
+            saveComment(comment);
             setComment('');
         }}>
             <h4>Add a Comment</h4>
@@ -21,3 +21,5 @@ export default (props) => {
         </form>
     );
 }
+
+export default connect(null, actions)(CommentBox);
