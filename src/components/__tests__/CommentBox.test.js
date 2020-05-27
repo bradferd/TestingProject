@@ -1,41 +1,42 @@
-import React from 'react';
-import { mount } from 'enzyme'
-import CommentBox from 'components/CommentBox';
+import React from "react";
+import { mount } from "enzyme";
+import CommentBox from "components/CommentBox";
 
 let wrapped;
 
 beforeEach(() => {
-    wrapped = mount(<CommentBox />);
+  wrapped = mount(<CommentBox />);
 });
 
 afterEach(() => {
-    wrapped.unmount();
-})
+  wrapped.unmount();
+});
 
-it('has a text area and a button', () => {
-    expect(wrapped.find('textarea').length).toEqual(1);
-    expect(wrapped.find('button').length).toEqual(1);
-})
+it("has a text area and a button", () => {
+  expect(wrapped.find("textarea").length).toEqual(1);
+  expect(wrapped.find("button").length).toEqual(1);
+});
 
-it('has a text area that users can type in it', () => {
-    expect(wrapped.find('textarea').simulate('change', {
-        target: { value: 'new comment' }
-    }));
+describe("the textarea", () => {
+  beforeEach(() => {
+    expect(
+      wrapped.find("textarea").simulate("change", {
+        target: { value: "new comment" },
+      })
+    );
+    wrapped.update();
+  });
+
+  it("has a text area that users can type in it", () => {
+    expect(wrapped.find("textarea").prop("value")).toEqual("new comment");
+  });
+
+  it("has a text area, can be submitted and clears upon submit", () => {
+    expect(wrapped.find("textarea").prop("value")).toEqual("new comment");
+
+    expect(wrapped.find("form").simulate("submit"));
     wrapped.update();
 
-    expect(wrapped.find('textarea').prop('value')).toEqual('new comment');
-})
-
-it('has a text area, can be submitted and clears upon submit', () => {
-
-    expect(wrapped.find('textarea').simulate('change', {
-        target: { value: 'new comment' }
-    }));
-    wrapped.update();
-    expect(wrapped.find('textarea').prop('value')).toEqual('new comment');
-
-    expect(wrapped.find('form').simulate('submit'));
-    wrapped.update();
-    
-    expect(wrapped.find('textarea').prop('value')).toEqual('');
-})
+    expect(wrapped.find("textarea").prop("value")).toEqual("");
+  });
+});
